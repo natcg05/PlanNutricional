@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi plan nutricional</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f5f2f9;--card:#fffdff;--tx:#28242f;--mu:#7b7588;--ac:#6c43b0;--ac2:#e9defa;--bd:#dfd8ea;--gr:#b4501e;--gr2:#f6e3d6}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1a23;--card:#27242f;--tx:#ece8f3;--mu:#a8a2b6;--ac:#b99cec;--ac2:#3b2f55;--bd:#3e394b;--gr:#e79466;--gr2:#43301f}}
+:root[data-theme="dark"]{--bg:#1c1a23;--card:#27242f;--tx:#ece8f3;--mu:#a8a2b6;--ac:#b99cec;--ac2:#3b2f55;--bd:#3e394b;--gr:#e79466;--gr2:#43301f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 "Avenir Next","Trebuchet MS",system-ui,sans-serif;min-height:100%}
+main{max-width:720px;margin:0 auto;padding:12px 14px 60px}
+h1{font:600 26px/1.1 Georgia,"Palatino Linotype",serif;margin:8px 0 2px}
+h2{font:600 19px Georgia,serif;margin:0}
+small,.mu{color:var(--mu)}small{display:block;font-size:12.5px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);display:flex;gap:6px;padding:8px 0;z-index:5;overflow-x:auto}
+nav button{flex:1;white-space:nowrap}
+button,select,input{font:inherit;color:var(--tx)}
+button{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:7px 12px;cursor:pointer}
+button:disabled{opacity:.38;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+nav button.on{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+input,select{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 8px;min-width:0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:12px 0}
+.card.done{background:var(--ac2);border-color:var(--ac);border-width:2px}.done .chip.ok{background:var(--ac);color:var(--card);border-color:var(--ac)}.ok-t{color:var(--ac);font-weight:600;font-size:13px}.hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{border:1px solid var(--bd);border-radius:99px;padding:2px 10px;font-size:13px}
+.chip.ok{background:var(--ac2);border-color:var(--ac);color:var(--ac);font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px dashed var(--bd)}
+.st{display:flex;align-items:center;gap:8px}.st button{padding:2px 11px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px}
+.tabs button.on{background:var(--tx);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px}
+.fb{text-align:left;padding:8px 10px}.fb small{margin-top:1px}
+.tag{color:var(--gr);background:var(--gr2);border-radius:6px;padding:0 6px;font-size:11.5px;margin-left:6px;white-space:nowrap}
+.f{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.f input[type=number]{width:64px}
+.chk{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px dashed var(--bd)}
+.chk input{width:22px;height:22px;accent-color:var(--ac)}
+.x{color:var(--gr);border-color:transparent;background:none}
+details{border-top:1px dashed var(--bd);padding:6px 0}summary{cursor:pointer;font-weight:600}
+label.t{display:flex;gap:8px;align-items:center;padding:3px 0}
+@media(prefers-reduced-motion:no-preference){button{transition:background .15s}}
+</style></head><body><main>
+<h1>Mi plan nutricional</h1><small>Plan por equivalencias</small>
+<nav id="nav"></nav><div id="v"></div>
+</main>
+<script>
+const NAMES={c:'Carbohidratos',f:'Fruta',p:'Proteínas',l:'Lácteo',g:'Grasas'};
+const EF={c:{c:1},f:{f:1},p:{p:1},pg:{p:1,g:1},l:{l:1},g:{g:1},cg:{c:1,g:1}};
+const PK={c:['c','cg'],f:['f'],p:['p','pg'],l:['l'],g:['g']};
+const CN={c:'Cereales, tubérculos y leguminosas',cg:'Carbohidrato con grasa',f:'Frutas',p:'Proteínas sin grasa',pg:'Proteínas con grasa',l:'Lácteos',g:'Grasas'};
+const TAG={cg:'<span class="tag">cuenta 1 grasa</span>',pg:'<span class="tag">cuenta 1 grasa</span>'};
+const OFF=['Huevo','Clara de huevo','Arroz blanco cocido','Arroz integral cocido','Leche entera','Leche semidescremada'];
+const RAW=`c|Avena cruda|20|g|¼ taza
+c|Pan integral Bimbo cero cero|25|g|1 rebanada
+c|Pan blanco|25|g|1 rebanada
+c|Tostadas Salmas|1|paquete|1 paquete
+c|Tortitas de arroz|2|unidades|2 unidades
+c|Tortilla de trigo integral|30|g|1 unidad
+c|Tortilla de maíz|30|g|1 unidad
+c|Harinas (máchica, haba, maíz, avena)|40|g|4 cucharadas
+c|Arepa de morocho|½|unidad|½ unidad
+c|Tortillas de verde (Soulfoods)|2|unidades|2 unidades
+c|Arroz blanco cocido|50|g|¼ taza
+c|Arroz integral cocido|50|g|¼ taza
+c|Quinua cocida|50|g|¼ taza
+c|Fideo cocido|50|g|⅓ taza
+c|Cebada cocida|50|g|⅓ taza
+c|Habas cocidas|70|g|⅓ taza
+c|Mote cocido|70|g|⅓ taza
+c|Melloco cocido|70|g|½ taza
+c|Choclo desgranado|60|g|½ taza
+c|Canguil|15|g|3 tazas
+c|Papa cocida|80|g|½ papa mediana
+c|Zanahoria blanca|70|g|½ taza
+c|Camote cocido|70|g|½ taza
+c|Yuca cocida|60|g|⅓ taza
+c|Verde cocido|60|g|⅓ taza
+c|Maduro cocido|50|g|⅓ unidad
+c|Lentejas cocidas|70|g|⅓ taza
+c|Frejol cocido|70|g|⅓ taza
+c|Sopa líquida|200|g|1 taza
+c|Sopa concentrada|150|g|½ taza
+c|Amaranto pop|20|g|2 cucharadas
+cg|Granola Nature's Heart sin azúcar|30|g|⅓ taza
+cg|Cornflakes|15|g|15 g
+f|Manzana|120|g|1 pequeña
+f|Pera|120|g|1 pequeña
+f|Naranja|130|g|1 mediana
+f|Mandarina|120|g|2 unidades
+f|Banano|60|g|½ unidad
+f|Papaya|140|g|1 taza
+f|Piña|120|g|1 taza
+f|Sandía|150|g|1 taza
+f|Melón|150|g|1 taza
+f|Mango|100|g|½ taza
+f|Uvas|90|g|15 unidades
+f|Mora|140|g|1 taza
+f|Frutilla|150|g|1 taza
+f|Babaco|150|g|1 taza
+f|Arándanos deshidratados|15|g|2 cucharadas
+p|Pechuga de pollo cocida|30|g|30 g
+p|Carne de res magra (lomo)|30|g|30 g
+p|Carne molida (3-6% grasa)|30|g|30 g
+p|Lomo de cerdo|30|g|30 g
+p|Pescado|35|g|35 g
+p|Camarón|30|g|30 g
+p|Atún en agua|30|g|½ lata pequeña
+p|Yogurt griego|80|g|¼ taza
+p|Clara de huevo|2|unidades|2 unidades
+p|Jamón de pavo|30|g|1 rodaja
+p|Proteína en polvo|10|g|⅓ scoop
+pg|Queso fresco|30|g|1 rodaja
+pg|Queso mozzarella|30|g|1 rodaja
+pg|Queso ricota|60|g|2 rodajas
+pg|Huevo|1|unidad|1 unidad
+l|Leche entera|240|ml|1 taza
+l|Leche semidescremada|240|ml|1 taza
+l|Leche descremada|240|ml|1 taza
+l|Yogurt natural Alibaba|200|g|1 taza
+l|Yogurt natural Chivería dietético|80|g|¼ taza
+l|Yogurt griego natural descremado|80|g|¼ taza
+l|Yogurt light Finesse|200|g|1 taza
+g|Aceite de oliva|5|g|1 cucharadita
+g|Aceite vegetal|5|g|1 cucharadita
+g|Aceite de aguacate|5|g|1 cucharadita
+g|Aguacate|30|g|2 cucharadas
+g|Almendras|10|g|8 unidades
+g|Pistachos|10|g|15 unidades
+g|Nueces|10|g|4 mitades
+g|Macadamia|10|g|6–7 unidades
+g|Maní|10|g|1 cucharada
+g|Mantequilla de maní|8|g|1 cucharadita
+g|Semillas de chía|10|g|1 cucharada
+g|Semillas de linaza|10|g|1 cucharada
+g|Aceitunas|30|g|6 unidades
+g|Mayonesa|5|g|1 cucharadita
+g|Queso crema|15|g|1 cucharada
+g|Mantequilla|5|g|1 cucharadita
+g|Chocolate negro Antiu Xixona|10|g|10 g
+g|Chocolate Pacari 100%|10|g|10 g
+g|Chocolate Valor 85%|10|g|10 g
+g|Chocolate de leche Antiu Xixona|10|g|10 g`;
+const uid=()=>'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const today=()=>new Date().toDateString();
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const M=(name,req,lean,veg)=>({id:uid(),name,req:{c:0,f:0,p:0,l:0,g:0,...req},lean,veg,sel:[]});
+function init(){return{day:today(),
+ meals:[M('Desayuno',{c:2,f:1,l:1,p:1,g:3},true,false),M('Almuerzo',{c:2,p:4,g:1},false,true),M('Cena',{c:1,p:4,g:1},true,true)],
+ foods:RAW.split('\n').map(r=>{const[c,n,a,u,no]=r.split('|');return{id:uid(),cat:c,name:n,amt:a,unit:u,note:no,on:!OFF.includes(n)}}),
+ supps:[{id:uid(),name:'Creatina',dose:'5 g todos los días',done:false},{id:uid(),name:'Colágeno',dose:'',done:false},{id:uid(),name:'Multivitamínico de mujer',dose:'',done:false}]}}
+function load(){try{const s=JSON.parse(localStorage.getItem('plan-v1'));if(s&&s.meals){if(s.day!==today()){s.day=today();s.supps.forEach(x=>x.done=false)}return s}}catch(e){}return init()}
+function save(){try{localStorage.setItem('plan-v1',JSON.stringify(S))}catch(e){}}
+let S=load(),UI={tab:'m',pick:{}};
+const fd=id=>S.foods.find(f=>f.id==id),ml=id=>S.meals.find(m=>m.id==id);
+function used(m){const u={c:0,f:0,p:0,l:0,g:0};m.sel.forEach(s=>{const f=fd(s.id);if(f)for(const k in EF[f.cat])u[k]+=EF[f.cat][k]*s.n});return u}
+function can(m,f){if(m.lean&&f.cat=='pg')return'Esta comida pide proteína sin grasa';const u=used(m),e=EF[f.cat];for(const k in e)if(u[k]+e[k]>m.req[k])return'No queda cupo de '+NAMES[k].toLowerCase();return''}
+function add(mid,fid){const m=ml(mid),f=fd(fid);if(can(m,f))return;const s=m.sel.find(x=>x.id==fid);s?s.n++:m.sel.push({id:fid,n:1});go()}
+function chg(mid,fid,d){const m=ml(mid),s=m.sel.find(x=>x.id==fid);if(d>0&&can(m,fd(fid)))return;s.n+=d;if(s.n<=0)m.sel=m.sel.filter(x=>x!==s);go()}
+function go(){save();render()}
+function mealHTML(m){const u=used(m),dims=Object.keys(NAMES).filter(k=>m.req[k]>0);
+ if(!dims.includes(UI.pick[m.id]))UI.pick[m.id]=dims[0];const pk=UI.pick[m.id];
+ const chips=dims.map(k=>`<span class="chip ${u[k]==m.req[k]?'ok':''}">${NAMES[k]} ${u[k]}/${m.req[k]}</span>`).join('')+(m.veg?'<span class="chip">Vegetales libres</span>':'')+(m.lean&&m.req.p?'<span class="chip">Proteína sin grasa</span>':'');
+ const rows=m.sel.map(s=>{const f=fd(s.id);if(!f)return'';return`<div class="row"><div><b>${esc(f.name)}</b>${TAG[f.cat]||''}<small>${f.amt=='½'?'½':f.amt*s.n} ${esc(f.unit)} · ${s.n} × ${esc(f.note)}</small></div><div class="st"><button aria-label="Quitar una porción" onclick="chg('${m.id}','${s.id}',-1)">−</button><b>${s.n}</b><button aria-label="Agregar una porción" ${can(m,f)?'disabled':''} onclick="chg('${m.id}','${s.id}',1)">+</button></div></div>`}).join('')||'<p class="mu">Elige alimentos abajo para armar esta comida.</p>';
+ const tabs=dims.map(k=>`<button class="${k==pk?'on':''}" onclick="UI.pick['${m.id}']='${k}';render()">${NAMES[k]}</button>`).join('');
+ const fl=S.foods.filter(f=>f.on&&PK[pk].includes(f.cat)).map(f=>{const r=can(m,f);return`<button class="fb" ${r?`disabled title="${esc(r)}"`:''} onclick="add('${m.id}','${f.id}')">${esc(f.name)}${TAG[f.cat]||''}<small>${esc(f.amt)} ${esc(f.unit)} · ${esc(f.note)}</small></button>`}).join('')||'<p class="mu">No hay alimentos activos en esta categoría.</p>';
+ const done=dims.length>0&&dims.every(k=>u[k]==m.req[k]);
+ return`<section class="card ${done?'done':''}"><div class="hd"><h2>${esc(m.name)}</h2>${done?'<span class="ok-t">✓ Comida completa</span>':''}</div><div class="chips">${chips}</div>${rows}<div class="tabs">${tabs}</div><div class="grid">${fl}</div></section>`}
+function suppCheck(){const d=S.supps.filter(x=>x.done).length;return`<section class="card ${S.supps.length&&d==S.supps.length?'done':''}"><div class="hd"><h2>Suplementos de hoy</h2>${S.supps.length&&d==S.supps.length?'<span class="ok-t">✓ Todos tomados</span>':''}</div><small>${d} de ${S.supps.length} tomados · se reinicia cada día</small>`+S.supps.map(x=>`<div class="chk"><input type="checkbox" ${x.done?'checked':''} onchange="tg('${x.id}')" aria-label="Tomado"><div style="flex:1"><b>${esc(x.name)}</b><small>${esc(x.dose||'Sin dosis anotada')}</small></div></div>`).join('')+`</section>`}
+function suppEdit(){return`<section class="card"><h2>Editar suplementos</h2><small>Los cambios se reflejan en el checklist de la pestaña Hoy.</small>`+S.supps.map(x=>`<div class="f"><input value="${esc(x.name)}" onchange="ed('${x.id}','name',this.value)" style="flex:1"><input value="${esc(x.dose)}" placeholder="Dosis" onchange="ed('${x.id}','dose',this.value)" style="flex:1"><button class="x" onclick="rs('${x.id}')">Quitar</button></div>`).join('')+`<div class="f"><input id="sn" placeholder="Nuevo suplemento" style="flex:1"><input id="sd" placeholder="Dosis" style="flex:1"><button onclick="as()">Agregar</button></div></section>`}
+const tg=id=>{const x=S.supps.find(s=>s.id==id);x.done=!x.done;go()};
+const ed=(id,k,v)=>{S.supps.find(s=>s.id==id)[k]=v;save()};
+const rs=id=>{S.supps=S.supps.filter(s=>s.id!=id);go()};
+function as(){const n=sn.value.trim();if(!n)return;S.supps.push({id:uid(),name:n,dose:sd.value.trim(),done:false});go()}
+function foodsHTML(){const g=Object.keys(CN).map(c=>{const l=S.foods.filter(f=>f.cat==c);return`<details><summary>${CN[c]} <small style="display:inline">(${l.filter(f=>f.on).length}/${l.length} activos)</small></summary>`+l.map(f=>`<label class="t"><input type="checkbox" ${f.on?'checked':''} onchange="fo('${f.id}')"><span style="flex:1">${esc(f.name)} <small style="display:inline">${esc(f.amt)} ${esc(f.unit)} · ${esc(f.note)}</small></span>${f.custom?`<button class="x" onclick="fx('${f.id}')">Borrar</button>`:''}</label>`).join('')+'</details>'}).join('');
+ return`<section class="card"><h2>Mis alimentos</h2><small>Desmarca lo que no comes (ahora: huevo y arroz). Solo los marcados aparecen al armar comidas.</small>${g}</section>
+<section class="card"><h2>Agregar alimento</h2><small>Una porción = lo que equivale a una unidad de su categoría en la tabla.</small><div class="f"><input id="an" placeholder="Nombre" style="flex:1 1 100%"><select id="ac">${Object.keys(CN).map(c=>`<option value="${c}">${CN[c]}</option>`).join('')}</select><input id="aa" type="number" placeholder="Cant." min="0" step="any"><input id="au" placeholder="g / ml / unidad" style="width:110px"><input id="ao" placeholder="Medida casera" style="flex:1"><button onclick="af()">Agregar</button></div></section>`}
+const fo=id=>{const f=fd(id);f.on=!f.on;go()};
+const fx=id=>{S.foods=S.foods.filter(f=>f.id!=id);S.meals.forEach(m=>m.sel=m.sel.filter(s=>s.id!=id));go()};
+function af(){const n=an.value.trim();if(!n)return;S.foods.push({id:uid(),cat:ac.value,name:n,amt:aa.value||'1',unit:au.value.trim()||'porción',note:ao.value.trim()||'1 porción',on:true,custom:true});go()}
+function planHTML(){return`<section class="card"><h2>Estructura del día</h2><small>Cambia las porciones cuando tu nutricionista ajuste el plan. Los vegetales son libres.</small></section>`+S.meals.map(m=>`<section class="card"><div class="f"><input value="${esc(m.name)}" style="flex:1;font-weight:600" onchange="pm('${m.id}','name',this.value)"><button class="x" onclick="dm('${m.id}')">Eliminar</button></div><div class="f">${Object.keys(NAMES).map(k=>`<label>${NAMES[k]}<br><input type="number" min="0" max="12" value="${m.req[k]}" onchange="pr('${m.id}','${k}',this.value)"></label>`).join('')}</div><label class="t"><input type="checkbox" ${m.lean?'checked':''} onchange="pm('${m.id}','lean',this.checked)">Solo proteína sin grasa</label><label class="t"><input type="checkbox" ${m.veg?'checked':''} onchange="pm('${m.id}','veg',this.checked)">Incluye vegetales</label></section>`).join('')+`<button onclick="nm()" style="width:100%">Agregar comida (colación, merienda…)</button><button class="x" onclick="if(confirm('¿Borrar todo y volver al plan original?')){S=init();go()}" style="width:100%;margin-top:10px">Restablecer plan original</button>`}
+const pm=(id,k,v)=>{ml(id)[k]=v;go()};
+const pr=(id,k,v)=>{ml(id).req[k]=Math.max(0,+v||0);go()};
+const dm=id=>{if(confirm('¿Eliminar esta comida?')){S.meals=S.meals.filter(m=>m.id!=id);go()}};
+const nm=()=>{S.meals.push(M('Colación',{c:1,f:1},false,false));go()};
+function render(){
+ const T={m:'Hoy',f:'Alimentos',p:'Plan',s:'Suplementos'};
+ nav.innerHTML=Object.keys(T).map(k=>`<button class="${UI.tab==k?'on':''}" onclick="UI.tab='${k}';render()">${T[k]}</button>`).join('');
+ v.innerHTML=UI.tab=='m'?suppCheck()+S.meals.map(mealHTML).join('')+`<button class="x" onclick="S.meals.forEach(m=>m.sel=[]);S.supps.forEach(x=>x.done=false);go()">Limpiar el día</button>`:UI.tab=='s'?suppEdit():UI.tab=='f'?foodsHTML():planHTML();}
+render();
+</script></body></html>
