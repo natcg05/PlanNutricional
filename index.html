@@ -1,50 +1,70 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Mi plan nutricional</title>
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f5f2f9;--card:#fffdff;--tx:#28242f;--mu:#7b7588;--ac:#6c43b0;--ac2:#e9defa;--bd:#dfd8ea;--gr:#b4501e;--gr2:#f6e3d6}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg1:#efe7ff;--bg2:#dde5ff;--bg3:#f7e6fb;--b1:#b592f5;--b2:#8fa7ff;--b3:#f2a9e4;--tx:#231b36;--mu:#6f6787;--ac:#7042c9;--ac2:rgba(124,77,214,.16);--card:rgba(255,255,255,.52);--in:rgba(255,255,255,.62);--bd:rgba(255,255,255,.78);--sh:0 10px 32px rgba(94,56,170,.14);--gr:#b4501e;--gr2:rgba(240,150,90,.22)}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1a23;--card:#27242f;--tx:#ece8f3;--mu:#a8a2b6;--ac:#b99cec;--ac2:#3b2f55;--bd:#3e394b;--gr:#e79466;--gr2:#43301f}}
-:root[data-theme="dark"]{--bg:#1c1a23;--card:#27242f;--tx:#ece8f3;--mu:#a8a2b6;--ac:#b99cec;--ac2:#3b2f55;--bd:#3e394b;--gr:#e79466;--gr2:#43301f}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#150f22;--bg2:#171a33;--bg3:#241338;--b1:#5b33b0;--b2:#33418f;--b3:#7a2f8f;--tx:#efe9fb;--mu:#a9a1c0;--ac:#b99cf5;--ac2:rgba(160,120,240,.22);--card:rgba(48,38,72,.5);--in:rgba(60,48,90,.55);--bd:rgba(255,255,255,.13);--sh:0 10px 32px rgba(0,0,0,.35);--gr:#f0a070}}
+:root[data-theme="dark"]{--bg1:#150f22;--bg2:#171a33;--bg3:#241338;--b1:#5b33b0;--b2:#33418f;--b3:#7a2f8f;--tx:#efe9fb;--mu:#a9a1c0;--ac:#b99cf5;--ac2:rgba(160,120,240,.22);--card:rgba(48,38,72,.5);--in:rgba(60,48,90,.55);--bd:rgba(255,255,255,.13);--sh:0 10px 32px rgba(0,0,0,.35);--gr:#f0a070}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 "Avenir Next","Trebuchet MS",system-ui,sans-serif;min-height:100%}
-main{max-width:720px;margin:0 auto;padding:12px 14px 60px}
-h1{font:600 26px/1.1 Georgia,"Palatino Linotype",serif;margin:8px 0 2px}
-h2{font:600 19px Georgia,serif;margin:0}
-small,.mu{color:var(--mu)}small{display:block;font-size:12.5px}
-nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);display:flex;gap:6px;padding:8px 0;z-index:5;overflow-x:auto}
-nav button{flex:1;white-space:nowrap}
+body{margin:0;color:var(--tx);font:15px/1.45 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100%;background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,var(--bg3)) fixed}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.6;background:radial-gradient(420px 420px at 88% 6%,var(--b1),transparent 70%),radial-gradient(380px 380px at 4% 42%,var(--b2),transparent 70%),radial-gradient(440px 440px at 82% 96%,var(--b3),transparent 70%)}
+main{max-width:640px;margin:0 auto;padding:10px 14px 130px}
+h2{font:700 18px/1.2 "Plus Jakarta Sans",system-ui,-apple-system,sans-serif;margin:0}
+small{display:block;font-size:12.5px;color:var(--mu)}.mu{color:var(--mu)}.hide{display:none!important}
 button,select,input{font:inherit;color:var(--tx)}
-button{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:7px 12px;cursor:pointer}
-button:disabled{opacity:.38;cursor:not-allowed}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
-nav button.on{background:var(--ac);color:var(--bg);border-color:var(--ac)}
-input,select{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 8px;min-width:0}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:12px 0}
-.card.done{background:var(--ac2);border-color:var(--ac);border-width:2px}.done .chip.ok{background:var(--ac);color:var(--card);border-color:var(--ac)}.ok-t{color:var(--ac);font-weight:600;font-size:13px}.hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.chip{border:1px solid var(--bd);border-radius:99px;padding:2px 10px;font-size:13px}
-.chip.ok{background:var(--ac2);border-color:var(--ac);color:var(--ac);font-weight:600}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px dashed var(--bd)}
-.st{display:flex;align-items:center;gap:8px}.st button{padding:2px 11px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px}
-.tabs button.on{background:var(--tx);color:var(--bg)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px}
-.fb{text-align:left;padding:8px 10px}.fb small{margin-top:1px}
-.tag{color:var(--gr);background:var(--gr2);border-radius:6px;padding:0 6px;font-size:11.5px;margin-left:6px;white-space:nowrap}
-.f{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
-.f input[type=number]{width:64px}
-.chk{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px dashed var(--bd)}
-.chk input{width:22px;height:22px;accent-color:var(--ac)}
+button{background:var(--in);border:1px solid var(--bd);border-radius:14px;padding:8px 13px;cursor:pointer;transition:transform .15s,background .25s,box-shadow .25s,opacity .2s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+button:active:not(:disabled){transform:scale(.95)}button:disabled{opacity:.35;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+input,select{background:var(--in);border:1px solid var(--bd);border-radius:14px;padding:8px 11px;min-width:0;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 4px var(--ac2)}
+.ttl{font:800 27px/1.15 "Plus Jakarta Sans",system-ui,-apple-system,sans-serif;background:transparent;border:1px solid transparent;width:100%;padding:6px 8px;margin:4px 0 2px;letter-spacing:-.02em}.ttl:hover,.ttl:focus{border-color:var(--bd)}
+.card{background:var(--card);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid var(--bd);border-radius:26px;box-shadow:var(--sh),inset 0 1px 0 rgba(255,255,255,.55);padding:16px;margin:12px 0;transition:background .4s,border-color .4s,box-shadow .4s}
+.card.done{background:linear-gradient(140deg,rgba(150,105,245,.34),var(--card));border-color:var(--ac);box-shadow:var(--sh),0 0 0 1px var(--ac)}
+.pop{animation:pop .55s cubic-bezier(.3,1.4,.5,1)}@keyframes pop{0%{transform:scale(.97)}50%{transform:scale(1.025);box-shadow:0 0 0 8px var(--ac2)}100%{transform:none}}
+.hero{background:linear-gradient(140deg,#a173f7,#6a3fd0 72%);color:#fff;border-color:rgba(255,255,255,.4);position:relative;overflow:hidden;padding:20px}
+.hero::after{content:"";position:absolute;inset:0 0 52% 0;background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);pointer-events:none}
+.hero small{color:rgba(255,255,255,.82);text-transform:capitalize}.hero .bar{background:rgba(255,255,255,.25)}.hero .bar i{background:#fff}
+.big{font:800 58px/1 "Plus Jakarta Sans",system-ui,-apple-system,sans-serif;letter-spacing:-.04em;margin-top:6px}.big span{font-size:24px;opacity:.7;font-weight:600}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.tiles div{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:16px;padding:9px 12px;position:relative;z-index:1}.tiles b{font-size:18px}
+.bar{height:9px;border-radius:9px;background:var(--ac2);overflow:hidden;margin:10px 0 2px}.bar i{display:block;height:100%;width:var(--w);border-radius:9px;background:linear-gradient(90deg,#b58cff,var(--ac));animation:grow .8s cubic-bezier(.2,.8,.2,1)}@keyframes grow{from{width:var(--f)}}
+.mh{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:0;background:none;border:0;border-radius:12px;-webkit-backdrop-filter:none;backdrop-filter:none}
+.mt{flex:1}.mt b{font-size:18px;display:block}.pc{font-weight:700;color:var(--ac)}.cv{width:20px;height:20px;transition:transform .35s;color:var(--mu)}.open .cv{transform:rotate(180deg)}
+.bd{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}.open .bd{grid-template-rows:1fr}.bi{overflow:hidden;min-height:0}
+.hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.ok-t{color:var(--ac);font-weight:700;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 6px}
+.chip{background:var(--in);border:1px solid var(--bd);border-radius:99px;padding:3px 11px;font-size:12.5px;transition:background .3s,color .3s}
+.chip.ok{background:var(--ac);color:#fff;border-color:transparent;font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--bd);animation:rin .3s ease-out}@keyframes rin{from{opacity:0;transform:translateY(-4px)}}
+.st{display:flex;align-items:center;gap:8px}.st button{padding:2px 0;width:34px;height:34px;border-radius:50%;font-size:18px}
+.tabs{position:relative;display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 10px;padding:5px;background:var(--in);border:1px solid var(--bd);border-radius:20px;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 4px rgba(0,0,0,.04)}
+.tind{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:15px;background:linear-gradient(140deg,#a880f9,#7042c9);box-shadow:0 6px 16px var(--ac2),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .45s cubic-bezier(.3,1.25,.5,1),width .45s cubic-bezier(.3,1.25,.5,1);z-index:0}
+.tabs button{position:relative;z-index:1;border-radius:15px;background:transparent;border:1px solid transparent;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--mu);box-shadow:none;transition:color .3s}
+.tabs button.on{color:#fff;background:transparent;border-color:transparent}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px}
+.fb{text-align:left;padding:9px 12px;border-radius:16px}.fb:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 20px var(--ac2)}.fb:active:not(:disabled){transform:scale(.96)}
+.vegbox{padding-top:2px}.chip.vg{display:inline-flex;align-items:center;gap:5px;background:var(--ac2);border-color:transparent}.chip.vg button{background:none;border:0;padding:0;color:var(--ac);font-size:15px;line-height:1;cursor:pointer;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.tag{color:var(--gr);background:var(--gr2);border-radius:8px;padding:0 6px;font-size:11.5px;margin-left:6px;white-space:nowrap}
+.f{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}.f input[type=number]{width:64px}
+.chk{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--bd);cursor:pointer}
+.sw{appearance:none;-webkit-appearance:none;width:48px;height:28px;padding:0;border-radius:99px;background:var(--ac2);border:1px solid var(--bd);position:relative;cursor:pointer;flex:none;transition:background .3s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.sw:checked{background:var(--ac)}.sw:checked::after{transform:translateX(20px)}
 .x{color:var(--gr);border-color:transparent;background:none}
-details{border-top:1px dashed var(--bd);padding:6px 0}summary{cursor:pointer;font-weight:600}
-label.t{display:flex;gap:8px;align-items:center;padding:3px 0}
-@media(prefers-reduced-motion:no-preference){button{transition:background .15s}}
+details{border-top:1px solid var(--bd);padding:8px 0}summary{cursor:pointer;font-weight:600}
+label.t{display:flex;gap:8px;align-items:center;padding:4px 0}label.t input{accent-color:var(--ac)}
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(92%,440px);display:flex;padding:6px;border-radius:30px;background:var(--card);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--bd);box-shadow:0 12px 36px rgba(70,40,140,.25),inset 0 1px 0 rgba(255,255,255,.5);z-index:9}
+nav button{flex:1;position:relative;z-index:1;background:none;border:0;box-shadow:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;font-size:11px;font-weight:600;color:var(--mu);border-radius:24px}nav button.on{color:#fff}
+.ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:24px;background:linear-gradient(140deg,#a173f7,#6a3fd0);box-shadow:0 6px 18px rgba(106,63,208,.45);transition:transform .45s cubic-bezier(.3,1.25,.5,1)}
+#v.in>*{animation:up .5s cubic-bezier(.2,.8,.2,1) both}#v.in>:nth-child(2){animation-delay:.05s}#v.in>:nth-child(3){animation-delay:.1s}#v.in>:nth-child(4){animation-delay:.15s}#v.in>:nth-child(n+5){animation-delay:.2s}@keyframes up{from{opacity:0;transform:translateY(14px)}}
+@media(max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.fb{padding:7px 9px;font-size:13.5px;line-height:1.3;overflow-wrap:anywhere}.fb small{font-size:11.5px}.tag{display:inline-block;margin:2px 0 0;font-size:10.5px}.card{padding:14px;border-radius:24px}main{padding-left:10px;padding-right:10px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style></head><body><main>
-<h1>Mi plan nutricional</h1><small>Plan por equivalencias</small>
-<nav id="nav"></nav><div id="v"></div>
-</main>
+<input id="ttl" class="ttl" maxlength="60" aria-label="Título de la app">
+<div id="v"></div>
+</main><nav id="nav"></nav>
 <script>
 const NAMES={c:'Carbohidratos',f:'Fruta',p:'Proteínas',l:'Lácteo',g:'Grasas'};
 const EF={c:{c:1},f:{f:1},p:{p:1},pg:{p:1,g:1},l:{l:1},g:{g:1},cg:{c:1,g:1}};
@@ -145,31 +165,47 @@ g|Chocolate de leche Antiu Xixona|10|g|10 g`;
 const uid=()=>'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const today=()=>new Date().toDateString();
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const M=(name,req,lean,veg)=>({id:uid(),name,req:{c:0,f:0,p:0,l:0,g:0,...req},lean,veg,sel:[]});
+const M=(name,req,lean,veg)=>({id:uid(),name,req:{c:0,f:0,p:0,l:0,g:0,...req},lean,veg,sel:[],vegs:[]});
 function init(){return{day:today(),
  meals:[M('Desayuno',{c:2,f:1,l:1,p:1,g:3},true,false),M('Almuerzo',{c:2,p:4,g:1},false,true),M('Cena',{c:1,p:4,g:1},true,true)],
  foods:RAW.split('\n').map(r=>{const[c,n,a,u,no]=r.split('|');return{id:uid(),cat:c,name:n,amt:a,unit:u,note:no,on:!OFF.includes(n)}}),
  supps:[{id:uid(),name:'Creatina',dose:'5 g todos los días',done:false},{id:uid(),name:'Colágeno',dose:'',done:false},{id:uid(),name:'Multivitamínico de mujer',dose:'',done:false}]}}
-function load(){try{const s=JSON.parse(localStorage.getItem('plan-v1'));if(s&&s.meals){if(s.day!==today()){s.day=today();s.supps.forEach(x=>x.done=false)}return s}}catch(e){}return init()}
+function load(){try{const s=JSON.parse(localStorage.getItem('plan-v1'));if(s&&s.meals){if(s.day!==today()){s.day=today();s.supps.forEach(x=>x.done=false)}s.meals.forEach(m=>{if(!Array.isArray(m.vegs))m.vegs=[]});return s}}catch(e){}return init()}
 function save(){try{localStorage.setItem('plan-v1',JSON.stringify(S))}catch(e){}}
-let S=load(),UI={tab:'m',pick:{}};
+let S=load(),UI={tab:'m',pick:{},d:{},pw:{},open:{},anim:1,tp:{}};
 const fd=id=>S.foods.find(f=>f.id==id),ml=id=>S.meals.find(m=>m.id==id);
 function used(m){const u={c:0,f:0,p:0,l:0,g:0};m.sel.forEach(s=>{const f=fd(s.id);if(f)for(const k in EF[f.cat])u[k]+=EF[f.cat][k]*s.n});return u}
 function can(m,f){if(m.lean&&f.cat=='pg')return'Esta comida pide proteína sin grasa';const u=used(m),e=EF[f.cat];for(const k in e)if(u[k]+e[k]>m.req[k])return'No queda cupo de '+NAMES[k].toLowerCase();return''}
 function add(mid,fid){const m=ml(mid),f=fd(fid);if(can(m,f))return;const s=m.sel.find(x=>x.id==fid);s?s.n++:m.sel.push({id:fid,n:1});go()}
 function chg(mid,fid,d){const m=ml(mid),s=m.sel.find(x=>x.id==fid);if(d>0&&can(m,fd(fid)))return;s.n+=d;if(s.n<=0)m.sel=m.sel.filter(x=>x!==s);go()}
 function go(){save();render()}
+function addVeg(mid){const inp=document.getElementById('vg'+mid);const n=inp.value.trim();if(!n)return;const m=ml(mid);m.vegs.push(n);inp.value='';go()}
+function rmVeg(mid,i){ml(mid).vegs.splice(i,1);go()}
+
 function mealHTML(m){const u=used(m),dims=Object.keys(NAMES).filter(k=>m.req[k]>0);
- if(!dims.includes(UI.pick[m.id]))UI.pick[m.id]=dims[0];const pk=UI.pick[m.id];
- const chips=dims.map(k=>`<span class="chip ${u[k]==m.req[k]?'ok':''}">${NAMES[k]} ${u[k]}/${m.req[k]}</span>`).join('')+(m.veg?'<span class="chip">Vegetales libres</span>':'')+(m.lean&&m.req.p?'<span class="chip">Proteína sin grasa</span>':'');
- const rows=m.sel.map(s=>{const f=fd(s.id);if(!f)return'';return`<div class="row"><div><b>${esc(f.name)}</b>${TAG[f.cat]||''}<small>${f.amt=='½'?'½':f.amt*s.n} ${esc(f.unit)} · ${s.n} × ${esc(f.note)}</small></div><div class="st"><button aria-label="Quitar una porción" onclick="chg('${m.id}','${s.id}',-1)">−</button><b>${s.n}</b><button aria-label="Agregar una porción" ${can(m,f)?'disabled':''} onclick="chg('${m.id}','${s.id}',1)">+</button></div></div>`}).join('')||'<p class="mu">Elige alimentos abajo para armar esta comida.</p>';
- const tabs=dims.map(k=>`<button class="${k==pk?'on':''}" onclick="UI.pick['${m.id}']='${k}';render()">${NAMES[k]}</button>`).join('');
- const fl=S.foods.filter(f=>f.on&&PK[pk].includes(f.cat)).map(f=>{const r=can(m,f);return`<button class="fb" ${r?`disabled title="${esc(r)}"`:''} onclick="add('${m.id}','${f.id}')">${esc(f.name)}${TAG[f.cat]||''}<small>${esc(f.amt)} ${esc(f.unit)} · ${esc(f.note)}</small></button>`}).join('')||'<p class="mu">No hay alimentos activos en esta categoría.</p>';
- const done=dims.length>0&&dims.every(k=>u[k]==m.req[k]);
- return`<section class="card ${done?'done':''}"><div class="hd"><h2>${esc(m.name)}</h2>${done?'<span class="ok-t">✓ Comida completa</span>':''}</div><div class="chips">${chips}</div>${rows}<div class="tabs">${tabs}</div><div class="grid">${fl}</div></section>`}
-function suppCheck(){const d=S.supps.filter(x=>x.done).length;return`<section class="card ${S.supps.length&&d==S.supps.length?'done':''}"><div class="hd"><h2>Suplementos de hoy</h2>${S.supps.length&&d==S.supps.length?'<span class="ok-t">✓ Todos tomados</span>':''}</div><small>${d} de ${S.supps.length} tomados · se reinicia cada día</small>`+S.supps.map(x=>`<div class="chk"><input type="checkbox" ${x.done?'checked':''} onchange="tg('${x.id}')" aria-label="Tomado"><div style="flex:1"><b>${esc(x.name)}</b><small>${esc(x.dose||'Sin dosis anotada')}</small></div></div>`).join('')+`</section>`}
+ const allTabs=m.veg?dims.concat(['veg']):dims;
+ if(!allTabs.includes(UI.pick[m.id]))UI.pick[m.id]=dims[0];const pk=UI.pick[m.id];
+ const tot=dims.reduce((a,k)=>a+m.req[k],0),us=dims.reduce((a,k)=>a+u[k],0),pct=tot?Math.round(us/tot*100):0;
+ const done=dims.length>0&&dims.every(k=>u[k]==m.req[k]),pop=done&&!UI.d[m.id],pf=UI.pw[m.id]??0;UI.d[m.id]=done;UI.pw[m.id]=pct;
+ if(UI.open[m.id]===undefined)UI.open[m.id]=true;
+ const chips=dims.map(k=>`<span class="chip ${u[k]==m.req[k]?'ok':''}">${NAMES[k]} ${u[k]}/${m.req[k]}</span>`).join('')+(m.veg?`<span class="chip">Vegetales libres${m.vegs.length?' · '+m.vegs.length+' hoy':''}</span>`:'')+(m.lean&&m.req.p?'<span class="chip">Proteína sin grasa</span>':'');
+ const tabs=`<span class="tind"></span>`+allTabs.map(k=>`<button class="${k==pk?'on':''}" onclick="UI.pick['${m.id}']='${k}';render()">${k=='veg'?'Vegetales':NAMES[k]}</button>`).join('');
+ let body;
+ if(pk=='veg'){
+  body=`<div class="vegbox"><small>Registra opcionalmente qué vegetales comiste — no afecta si la comida está completa.</small><div class="chips">${m.vegs.map((v,i)=>`<span class="chip vg">${esc(v)}<button aria-label="Quitar ${esc(v)}" onclick="rmVeg('${m.id}',${i})">×</button></span>`).join('')||'<span class="mu" style="font-size:13px">Aún no registras ninguno.</span>'}</div><div class="f"><input id="vg${m.id}" placeholder="Ej. brócoli, pepino…" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addVeg('${m.id}')}"><button onclick="addVeg('${m.id}')">Agregar</button></div></div>`;
+ }else{
+  const allRows=m.sel.length?`<div class="rows-all">${m.sel.map(s=>{const f=fd(s.id);if(!f)return'';return`<div class="row"><div><b>${esc(f.name)}</b>${TAG[f.cat]||''}<small>${f.amt=='½'?'½':f.amt*s.n} ${esc(f.unit)} · ${s.n} × ${esc(f.note)}</small></div><div class="st"><button aria-label="Quitar una porción" onclick="chg('${m.id}','${s.id}',-1)">−</button><b>${s.n}</b><button aria-label="Agregar una porción" ${can(m,f)?'disabled':''} onclick="chg('${m.id}','${s.id}',1)">+</button></div></div>`}).join('')}</div>`:'<p class="mu">Elige alimentos abajo para armar esta comida.</p>';
+  const fl=S.foods.filter(f=>f.on&&PK[pk].includes(f.cat)).map(f=>{const r=can(m,f);return`<button class="fb" ${r?`disabled title="${esc(r)}"`:''} onclick="add('${m.id}','${f.id}')">${esc(f.name)}${TAG[f.cat]||''}<small>${esc(f.amt)} ${esc(f.unit)} · ${esc(f.note)}</small></button>`}).join('')||'<p class="mu">No hay alimentos activos en esta categoría.</p>';
+  body=allRows+`<div class="grid">${fl}</div>`;
+ }
+ return`<section class="card ${done?'done':''} ${pop?'pop':''} ${UI.open[m.id]?'open':''}" id="c${m.id}"><button class="mh" onclick="tgc('${m.id}',this)" aria-expanded="${!!UI.open[m.id]}"><span class="mt"><b>${esc(m.name)}</b><small>${done?'✓ Comida completa':us+' de '+tot+' porciones'}</small></span><span class="pc">${pct}%</span><svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><div class="bar"><i style="--f:${pf}%;--w:${pct}%"></i></div><div class="bd"><div class="bi"><div class="chips">${chips}</div><div class="tabs" data-mid="${m.id}">${tabs}</div>${body}</div></div></section>`}
+function tgc(id,b){UI.open[id]=!UI.open[id];document.getElementById('c'+id).classList.toggle('open',UI.open[id]);b.setAttribute('aria-expanded',UI.open[id])}
+function hero(){let t=0,us=0,dn=0;S.meals.forEach(m=>{const u=used(m),d=Object.keys(NAMES).filter(k=>m.req[k]>0);d.forEach(k=>{t+=m.req[k];us+=u[k]});if(d.length&&d.every(k=>u[k]==m.req[k]))dn++});
+ const pct=t?Math.round(us/t*100):0,pf=UI.pw.h??0,sd=S.supps.filter(x=>x.done).length;UI.pw.h=pct;
+ return`<section class="card hero"><small>${new Date().toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'})}</small><div class="big">${dn}<span>/${S.meals.length}</span></div><b>comidas completas</b><div class="bar"><i style="--f:${pf}%;--w:${pct}%"></i></div><div class="tiles"><div><small>Porciones</small><b>${us}/${t}</b></div><div><small>Suplementos</small><b id="hs">${sd}/${S.supps.length}</b></div></div></section>`}
+function suppCheck(){const d=S.supps.filter(x=>x.done).length,all=S.supps.length>0&&d==S.supps.length;return`<section class="card ${all?'done':''}" id="sc"><div class="hd"><h2>Suplementos de hoy</h2><span class="ok-t ${all?'':'hide'}" id="sok">✓ Todos tomados</span></div><small id="sct">${d} de ${S.supps.length} tomados · se reinicia cada día</small>`+S.supps.map(x=>`<label class="chk"><span style="flex:1"><b>${esc(x.name)}</b><small>${esc(x.dose||'Sin dosis anotada')}</small></span><input type="checkbox" class="sw" ${x.done?'checked':''} onchange="tg('${x.id}')" aria-label="Tomado"></label>`).join('')+`</section>`}
 function suppEdit(){return`<section class="card"><h2>Editar suplementos</h2><small>Los cambios se reflejan en el checklist de la pestaña Hoy.</small>`+S.supps.map(x=>`<div class="f"><input value="${esc(x.name)}" onchange="ed('${x.id}','name',this.value)" style="flex:1"><input value="${esc(x.dose)}" placeholder="Dosis" onchange="ed('${x.id}','dose',this.value)" style="flex:1"><button class="x" onclick="rs('${x.id}')">Quitar</button></div>`).join('')+`<div class="f"><input id="sn" placeholder="Nuevo suplemento" style="flex:1"><input id="sd" placeholder="Dosis" style="flex:1"><button onclick="as()">Agregar</button></div></section>`}
-const tg=id=>{const x=S.supps.find(s=>s.id==id);x.done=!x.done;go()};
+const tg=id=>{const x=S.supps.find(s=>s.id==id);x.done=!x.done;save();const d=S.supps.filter(x=>x.done).length,all=d==S.supps.length;sc.classList.toggle('done',all);sok.classList.toggle('hide',!all);sct.textContent=d+' de '+S.supps.length+' tomados · se reinicia cada día';hs.textContent=d+'/'+S.supps.length};
 const ed=(id,k,v)=>{S.supps.find(s=>s.id==id)[k]=v;save()};
 const rs=id=>{S.supps=S.supps.filter(s=>s.id!=id);go()};
 function as(){const n=sn.value.trim();if(!n)return;S.supps.push({id:uid(),name:n,dose:sd.value.trim(),done:false});go()}
@@ -184,9 +220,23 @@ const pm=(id,k,v)=>{ml(id)[k]=v;go()};
 const pr=(id,k,v)=>{ml(id).req[k]=Math.max(0,+v||0);go()};
 const dm=id=>{if(confirm('¿Eliminar esta comida?')){S.meals=S.meals.filter(m=>m.id!=id);go()}};
 const nm=()=>{S.meals.push(M('Colación',{c:1,f:1},false,false));go()};
+const IC={m:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',f:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-14 14zM5 19c3-4 6-7 10-9"/>',p:'<path d="M4 6h10M18 6h2M4 12h2M10 12h10M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',s:'<path d="M10.5 20.5a4.5 4.5 0 0 1-6.4-6.4l9.9-9.9a4.5 4.5 0 0 1 6.4 6.4z"/><path d="M8.5 8.5l7 7"/>'};
+const T={m:'Hoy',f:'Alimentos',p:'Plan',s:'Suplementos'},K=Object.keys(T);
 function render(){
- const T={m:'Hoy',f:'Alimentos',p:'Plan',s:'Suplementos'};
- nav.innerHTML=Object.keys(T).map(k=>`<button class="${UI.tab==k?'on':''}" onclick="UI.tab='${k}';render()">${T[k]}</button>`).join('');
- v.innerHTML=UI.tab=='m'?suppCheck()+S.meals.map(mealHTML).join('')+`<button class="x" onclick="S.meals.forEach(m=>m.sel=[]);S.supps.forEach(x=>x.done=false);go()">Limpiar el día</button>`:UI.tab=='s'?suppEdit():UI.tab=='f'?foodsHTML():planHTML();}
+ ttl.value=S.title||'Mi plan nutricional';document.title=ttl.value;
+ if(!nav.children.length)nav.innerHTML='<i class="ind"></i>'+K.map(k=>`<button data-k="${k}" onclick="UI.tab='${k}';UI.anim=1;render()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">${IC[k]}</svg><span>${T[k]}</span></button>`).join('');
+ nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.k==UI.tab));nav.querySelector('.ind').style.transform=`translateX(${K.indexOf(UI.tab)*100}%)`;
+ v.innerHTML=UI.tab=='m'?hero()+suppCheck()+S.meals.map(mealHTML).join('')+`<button class="x" onclick="S.meals.forEach(m=>{m.sel=[];m.vegs=[]});S.supps.forEach(x=>x.done=false);UI.d={};go()">Limpiar el día</button>`:UI.tab=='s'?suppEdit():UI.tab=='f'?foodsHTML():planHTML();
+ if(UI.anim){v.classList.remove('in');void v.offsetWidth;v.classList.add('in');UI.anim=0;clearTimeout(UI.t);UI.t=setTimeout(()=>v.classList.remove('in'),800)}
+ syncTabs();}
+function syncTabs(){document.querySelectorAll('.tabs[data-mid]').forEach(el=>{
+ const on=el.querySelector('button.on'),ind=el.querySelector('.tind');if(!on||!ind)return;
+ const l=on.offsetLeft,w=on.offsetWidth,prev=UI.tp[el.dataset.mid];
+ ind.style.transition='none';ind.style.width=(prev?prev.w:w)+'px';ind.style.transform='translateX('+(prev?prev.l:l)+'px)';
+ void ind.offsetWidth;ind.style.transition='';
+ requestAnimationFrame(()=>{ind.style.width=w+'px';ind.style.transform='translateX('+l+'px)'});
+ UI.tp[el.dataset.mid]={l,w};
+})}
+ttl.onchange=()=>{S.title=ttl.value.trim()||'Mi plan nutricional';ttl.value=S.title;document.title=S.title;save()};
 render();
 </script></body></html>
